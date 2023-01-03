@@ -38,3 +38,60 @@ def runge_kutta_method(M, C, K, F, u0, v0, dt, n_steps):
         a_rk[i] = (F[i] - C.dot(v_rk[i]) - K.dot(u_rk[i])) / M
     return u_rk, v_rk, a_rk
 
+def explicit_euler_method(M, C, K, F, u0, v0, dt, n_steps):
+    # Initialize arrays to store the solutions
+    u_ee = np.zeros(n_steps+1)
+    v_ee = np.zeros(n_steps+1)
+    a_ee = np.zeros(n_steps+1)
+    u_ee[0] = u0
+    v_ee[0] = v0
+    a_ee[0] = (F[0] - C.dot(v0) - K.dot(u0)) / M
+    
+    # Loop over the time steps
+    for i in range(1, n_steps+1):
+        v_ee[i] = v_ee[i-1] + dt*a_ee[i-1]
+        u_ee[i] = u_ee[i-1] + dt*v_ee[i]
+        a_ee[i] = (F[i] - C.dot(v_ee[i]) - K.dot(u_ee[i])) / M
+    
+    return u_ee, v_ee, a_ee
+
+#Define the mass, damping, and stiffness matrices
+M = np.array([[2, 0], [0, 1]])
+C = np.array([[0, 0], [0, 0]])
+K = np.array([[1, -1], [-1, 2]])
+
+#Define the load vector and the initial displacement and velocity
+F = np.zeros((2, n_steps+1))
+F[0, :] = 1
+u0 = np.array([0, 0])
+v0 = np.array([0, 0])
+
+#Set the time step and the number of time steps
+dt = 0.1
+n_steps = 10
+
+#Set the Newmark method parameters
+beta = 1/4
+gamma = 1/2
+
+#Solve the problem using the Newmark method
+u_newmark, v_newmark, a_newmark = newmark_method(M, C, K, F, u0, v0, dt, n_steps)
+
+#Solve the problem using the Runge-Kutta method
+u_rk, v_rk, a_rk = runge_kutta_method(M, C, K, F, u0, v0, dt, n_steps)
+
+# Solve the problem using the explicit Euler method
+u_ee, v_ee, a_ee = explicit_euler_method(M, C, K, F, u0, v0, dt, n_steps)
+
+#Compare the solutions
+print("Displacement (Newmark):", u_newmark)
+print("Displacement (Runge-Kutta):", u_rk)
+print("Displacement (Explicit Euler):", u_ee)
+
+print("Velocity (Newmark):", v_newmark)
+print("Velocity (Runge-Kutta):", v_rk)
+print("Velocity (Explicit Euler):", v_ee)
+
+print("Acceleration (Newmark):", a_newmark)
+print("Acceleration (Runge-Kutta):", a_rk)
+print("Acceleration (Explicit Euler):", a_ee)
