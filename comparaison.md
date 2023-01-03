@@ -1,6 +1,6 @@
-#Runge-Kutta
+# Runge-Kutta
 
-#Euler explicite
+# Euler explicite
 
 La méthode de Newmark et la méthode d'Euler explicite sont deux méthodes de résolution numérique de problèmes de dynamique des structures qui permettent de calculer les déplacements, les vitesses et les accélérations d'un système de masse, de raideur et de damping à un pas de temps donné, en utilisant les valeurs de ces grandeurs aux pas de temps précédents.
 
@@ -18,4 +18,4 @@ En conclusion, la méthode de Newmark et la méthode d'Euler explicite sont deux
 
 
 
-#Verlet
+# Verlet
