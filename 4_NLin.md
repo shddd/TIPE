@@ -1,3 +1,5 @@
+## Application de la méthode de Newmark à des problèmes de dynamique des structures non linéaires.
+
 La méthode de Newmark peut être appliquée à des problèmes de dynamique des structures non linéaires en utilisant des modèles constitutifs non linéaires pour la matrice de raideur et/ou la matrice de damping.
 
 Pour résoudre un problème de dynamique des structures non linéaire avec la méthode de Newmark, il faut d'abord écrire les équations de mouvement du système sous forme matricielle. Ces équations sont données par :
