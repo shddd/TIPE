@@ -31,3 +31,15 @@ Si vous souhaitez une solution rapide et stable pour un problème de dynamique n
 Si vous souhaitez une solution rapide et stable pour un problème de dynamique linéaire, vous pouvez utiliser des valeurs de beta et gamma plus élevées, telles que beta = 1/4 et gamma = 1. Ces valeurs permettent de converger plus rapidement vers la solution, mais peuvent entraîner une perte de précision pour des pas de temps trop grands.
 
 Il est important de noter que les valeurs de beta et gamma recommandées par Newmark ne sont pas universellement valables et peuvent varier en fonction de la nature du problème et des objectifs de l'étude. Il est donc conseillé de tester différentes valeurs de beta et gamma et de vérifier la stabilité et la précision de la solution obtenue pour chaque cas.
+
+## Role de beta et gammma dans la vitesse de convergence
+
+Les paramètres beta et gamma de la méthode de Newmark ont une influence sur la vitesse de convergence de la méthode, c'est-à-dire sur le nombre d'itérations nécessaires pour obtenir une solution précise et stable.
+
+En général, des valeurs de beta et gamma plus élevées permettent de converger plus rapidement vers la solution, mais peuvent entraîner une perte de précision pour des pas de temps trop grands. Des valeurs de beta et gamma plus basses permettent d'obtenir des solutions plus précises, mais nécessitent un nombre d'itérations plus élevé pour converger vers la solution.
+
+Il est donc important de trouver un compromis entre la vitesse de convergence et la précision de la solution en fonction de la nature du problème et des objectifs de l'étude. Si vous souhaitez une solution rapide, vous pouvez utiliser des valeurs de beta et gamma plus élevées, mais il faudra peut-être accepter une perte de précision pour des pas de temps trop grands. Si vous souhaitez une solution très précise, vous pouvez utiliser des valeurs de beta et gamma plus basses, mais il faudra peut-être accepter une convergence plus lente vers la solution.
+
+Il est également important de noter que la vitesse de convergence de la méthode de Newmark dépend également du pas de temps utilisé. Un pas de temps trop grand peut entraîner une instabilité de la solution et une convergence lente, tandis qu'un pas de temps trop petit peut nécessiter un nombre important d'itérations et entraîner une lenteur de convergence. Il est donc important de choisir un pas de temps approprié en fonction de la nature du problème et de l'accuracy souhaitée.
+
+
