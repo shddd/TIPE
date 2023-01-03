@@ -21,3 +21,13 @@ Effectuer des itérations sur les non linéarités : dans certains cas, il est p
 Utiliser des éléments finis non linéaires : pour résoudre des problèmes de dynamique des structures non linéaires, il est possible d'utiliser des éléments finis non linéaires. Ces éléments permettent de décrire les non linéarités du comportement du matériau et de la structure.
 
 Il est important de choisir la bonne approche en fonction des caractéristiques du problème à résoudre et des ressources informatiques disponibles.
+
+## Comment utiliser des techniques de continuation et de bifurcation pour étudier les comportements non linéaires des systèmes ?
+
+Les techniques de continuation et de bifurcation sont des méthodes utilisées pour étudier les comportements non linéaires de systèmes dynamiques.
+
+La continuation consiste à suivre le comportement d'un système en modifiant une ou plusieurs de ses paramètres. Par exemple, on peut étudier comment le comportement d'un oscillateur amorti dépend de la valeur de son coefficient de damping. En modifiant cette valeur de manière progressive, on peut observer comment le système évolue et comment il atteint un état stable ou instable.
+
+La bifurcation consiste à étudier les points de bifurcation, c'est-à-dire les points où le comportement d'un système change radicalement en fonction d'un paramètre. Par exemple, on peut étudier comment le comportement d'un oscillateur amorti dépend de la valeur de sa fréquence naturelle. En modifiant cette valeur de manière progressive, on peut observer des points de bifurcation où le système passe d'un comportement oscillant à un comportement monotone.
+
+Pour utiliser ces techniques, il est généralement nécessaire de résoudre numériquement les équations de mouvement du système et de faire varier les paramètres de manière contrôlée. Il existe plusieurs algorithmes et logiciels qui permettent de réaliser ces analyses de manière automatisée.
