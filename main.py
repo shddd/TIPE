@@ -1,7 +1,8 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-def newmark_method(M, C, K, F, u0, v0, dt, n_steps):
+# Newmark's Method
+def newmark_method(M, C, K, F, u0, v0, dt, n_steps, beta, gamma):
     # Initialize arrays to store the solutions
     u_newmark = np.zeros(n_steps+1)
     v_newmark = np.zeros(n_steps+1)
@@ -15,9 +16,13 @@ def newmark_method(M, C, K, F, u0, v0, dt, n_steps):
         v_newmark[i] = v_newmark[i-1] + dt*((1-gamma)*a_newmark[i-1] + gamma*a_newmark[i])
         a_newmark[i] = (F[i] - C.dot(v_newmark[i]) - K.dot(u_newmark[i])) / M
     return u_newmark, v_newmark, a_newmark
-
+    
+    
 def runge_kutta_method(M, C, K, F, u0, v0, dt, n_steps):
     # Initialize arrays to store the solutions
+    u_rk = np.zeros(n_steps+1)
+    v_rk = np.zeros(n_steps+1)
+    a_rk = np.zeros(n_steps+1)
     u_rk[0] = u0
     v_rk[0] = v0
     a_rk[0] = (F[0] - C.dot(v0) - K.dot(u0)) / M
@@ -26,15 +31,16 @@ def runge_kutta_method(M, C, K, F, u0, v0, dt, n_steps):
         k1 = dt*v_rk[i-1]
         l1 = dt*a_rk[i-1]
         k2 = dt*(v_rk[i-1] + l1/2)
-        l2 = dt*(a_rk[i-1] + (F[i] - C.dot(v_rk[i-1] + l1/2) - K.dot(u_rk[i-1] + k1/2)) / M)
+        l2 = dt*((F[i] - C.dot(v_rk[i-1] + l1/2) - K.dot(u_rk[i-1] + k1/2)) / M)
         k3 = dt*(v_rk[i-1] + l2/2)
-        l3 = dt*(a_rk[i-1] + (F[i] - C.dot(v_rk[i-1] + l2/2) - K.dot(u_rk[i-1] + k2/2)) / M)
+        l3 = dt*((F[i] - C.dot(v_rk[i-1] + l2/2) - K.dot(u_rk[i-1] + k2/2)) / M)
         k4 = dt*(v_rk[i-1] + l3)
-        l4 = dt*(a_rk[i-1] + (F[i] - C.dot(v_rk[i-1] + l3) - K.dot(u_rk[i-1] + k3)) / M)
+        l4 = dt*((F[i] - C.dot(v_rk[i-1] + l3) - K.dot(u_rk[i-1] + k3)) / M)
         u_rk[i] = u_rk[i-1] + (k1 + 2*k2 + 2*k3 + k4) / 6
         v_rk[i] = v_rk[i-1] + (l1 + 2*l2 + 2*l3 + l4) / 6
         a_rk[i] = (F[i] - C.dot(v_rk[i]) - K.dot(u_rk[i])) / M
     return u_rk, v_rk, a_rk
+
 
 def explicit_euler_method(M, C, K, F, u0, v0, dt, n_steps):
     # Initialize arrays to store the solutions
@@ -44,32 +50,39 @@ def explicit_euler_method(M, C, K, F, u0, v0, dt, n_steps):
     u_ee[0] = u0
     v_ee[0] = v0
     a_ee[0] = (F[0] - C.dot(v0) - K.dot(u0)) / M
-    # Loop over the time steps
+
     for i in range(1, n_steps+1):
-        v_ee[i] = v_ee[i-1] + dt*a_ee[i-1]
+        a_ee[i] = (F[i] - C.dot(v_ee[i-1]) - K.dot(u_ee[i-1])) / M
+        v_ee[i] = v_ee[i-1] + dt*a_ee[i]
         u_ee[i] = u_ee[i-1] + dt*v_ee[i]
-        a_ee[i] = (F[i] - C.dot(v_ee[i]) - K.dot(u_ee[i])) / M
+
     return u_ee, v_ee, a_ee
 
-def verlet_method(M, C, K, F, u0, v0, dt, n_steps):
+
+def verlet_method(M, F, u0, v0, dt, n_steps):
     # Initialize arrays to store the solutions
     u_verlet = np.zeros(n_steps+1)
     v_verlet = np.zeros(n_steps+1)
     a_verlet = np.zeros(n_steps+1)
     u_verlet[0] = u0
     v_verlet[0] = v0
-    a_verlet[0] = (F[0] - C.dot(v0) - K.dot(u0)) / M
-    # Loop over the time steps
-    for i in range(1, n_steps+1):
-        u_verlet[i] = 2*u_verlet[i-1] - u_verlet[i-2] + dt**2*a_verlet[i]
-        v_verlet[i] = (u_verlet[i] - u_verlet[i-2]) / (2*dt)
-        a_verlet[i] = (F[i] - C.dot(v_verlet[i]) - K.dot(u_verlet[i])) / M
+    a_verlet[0] = F[0]/M
+
+    for i in range(1, n_steps):
+        u_verlet[i+1] = 2*u_verlet[i] - u_verlet[i-1] + dt**2*F[i]/M
+        v_verlet[i] = (u_verlet[i+1] - u_verlet[i-1])/(2*dt)
+        a_verlet[i] = (u_verlet[i+1] - 2*u_verlet[i] + u_verlet[i-1])/dt**2
     return u_verlet, v_verlet, a_verlet
+
 
 #Define the mass, damping, and stiffness matrices
 M = np.array([[2, 0], [0, 1]])
 C = np.array([[0, 0], [0, 0]])
 K = np.array([[1, -1], [-1, 2]])
+
+#Set the time step and the number of time steps
+dt = 0.1
+n_steps = 10
 
 #Define the load vector and the initial displacement and velocity
 F = np.zeros((2, n_steps+1))
@@ -77,16 +90,12 @@ F[0, :] = 1
 u0 = np.array([0, 0])
 v0 = np.array([0, 0])
 
-#Set the time step and the number of time steps
-dt = 0.1
-n_steps = 10
-
 #Set the Newmark method parameters
 beta = 1/4
 gamma = 1/2
 
 #Solve the problem using the Newmark method
-u_newmark, v_newmark, a_newmark = newmark_method(M, C, K, F, u0, v0, dt, n_steps)
+u_newmark, v_newmark, a_newmark = newmark_method(M, C, K, F, u0, v0, dt, n_steps, beta, gamma)
 
 #Solve the problem using the Runge-Kutta method
 u_rk, v_rk, a_rk = runge_kutta_method(M, C, K, F, u0, v0, dt, n_steps)
